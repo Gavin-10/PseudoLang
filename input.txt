@@ -1,0 +1,70 @@
+
+
+class Person {
+		member name;
+		member age;
+
+		constructor (name, age) {
+				this.name = name;
+				this.age = age;
+		}
+
+		method printInfo() {
+				print this.name + "    " + this.age;
+		}
+}
+
+class Student: Person {
+		member id;
+		member password;
+
+		constructor (name, age, id, password) {
+				super(name, age);
+				this.id = id;
+				this.password = password;
+		}
+
+		method schoolLogin(id, password) with schoolLoginMessage {
+				if (id == this.id and password == this.password) {
+						schoolLoginMessage();
+				}
+		}
+}
+
+var student = Student("Gavin", 20, 172959, "P@ssw0rd");
+
+student.schoolLogin("172959", "P@ssw0rd") with () {
+		print "Welcome to school!";
+}
+
+var computed => {
+		print 1 + 2;
+}
+
+chain validator(a, b, c) => [
+		(a) {
+				if (a != "first") {
+						break;
+				}
+
+				print "Step 1 finished";
+		},
+
+		(b) {
+				if (b != "second") {
+						break;
+				}
+
+				print "Step 2 finished";
+		},
+
+		(c) {
+				if (c != "third") {
+						break;
+				}
+
+				print "Success";
+		}
+]
+
+validator("first", "second", "third");
