@@ -25,5 +25,7 @@ private:
 		const std::vector<unsigned char> source;
 		const std::vector<Token> tokens;
 
+		int current = 0;
+
 		std::vector<std::unique_ptr<Expr::Expr> > AST = {};
 };

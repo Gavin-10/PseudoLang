@@ -29,9 +29,9 @@ namespace Expr {
 		struct Ternary : Expr {
 				Ternary(std::unique_ptr<Expr>, std::unique_ptr<Expr>, std::unique_ptr<Expr>);
 
-				std::unique_ptr<Expr> expression;
-				std::unique_ptr<Expr> left;
-				std::unique_ptr<Expr> right;
+				const std::unique_ptr<Expr> expression;
+				const std::unique_ptr<Expr> left;
+				const std::unique_ptr<Expr> right;
 
 		private:
 				const ExprType thisNode = ExprType::TERNARY;
@@ -40,9 +40,9 @@ namespace Expr {
 		struct Binary : Expr {
 				Binary(std::unique_ptr<Expr>, Token, std::unique_ptr<Expr>);
 
-				std::unique_ptr<Expr> left;
+				const std::unique_ptr<Expr> left;
 				const Token operatorr;
-				std::unique_ptr<Expr> right;
+				const std::unique_ptr<Expr> right;
 
 		private:
 				const ExprType thisNode = ExprType::BINARY;
@@ -51,14 +51,14 @@ namespace Expr {
 		struct Grouping : Expr {
 				Grouping(std::unique_ptr<Expr>);
 
-				std::unique_ptr<Expr> expression;
+				const std::unique_ptr<Expr> expression;
 
 		private:
 				const ExprType thisNode = ExprType::GROUPING;
 		};
 
 		struct Literal : Expr {
-				Literal(Value value);
+				Literal(Value);
 
 				const Value value;
 
@@ -69,9 +69,9 @@ namespace Expr {
 		struct Logical : Expr {
 				Logical(std::unique_ptr<Expr>, Token, std::unique_ptr<Expr>);
 
-				std::unique_ptr<Expr> left;
+				const std::unique_ptr<Expr> left;
 				const Token operatorr;
-				std::unique_ptr<Expr> right;
+				const std::unique_ptr<Expr> right;
 
 		private:
 				const ExprType thisNode = ExprType::LOGICAL;
@@ -81,7 +81,7 @@ namespace Expr {
 				Unary(Token, std::unique_ptr<Expr>);
 
 				const Token operatorr;
-				std::unique_ptr<Expr> right;
+				const std::unique_ptr<Expr> right;
 
 		private:
 				const ExprType thisNode = ExprType::UNARY;

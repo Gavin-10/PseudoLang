@@ -1,5 +1,5 @@
 
-#include "expr.h"
+#include "Expr.h"
 
 #include <stdexcept>
 
@@ -39,12 +39,29 @@ namespace Expr {
 		}
 
 		//Binary
+		Binary::Binary(std::unique_ptr<Expr> left, Token operatorr, std::unique_ptr<Expr> right)
+				: left(std::move(left)), operatorr(operatorr), right(std::move(right)) {
+
+		}
 
 		//Grouping
+		Grouping::Grouping(std::unique_ptr<Expr> expression)
+				: expression(std::move(expression)) {
+
+		}
 
 		//Literal
+		Literal::Literal(Value value) : value(value) {};
 
 		//Logical
+		Logical::Logical(std::unique_ptr<Expr> left, Token operatorr, std::unique_ptr<Expr> right)
+				: left(std::move(left)), operatorr(operatorr), right(std::move(right)) {
+
+		}
 
 		//Unary
+		Unary::Unary(Token operatorr, std::unique_ptr<Expr> right)
+				: operatorr(operatorr), right(std::move(right)) {
+
+		}
 }
