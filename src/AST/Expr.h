@@ -6,94 +6,87 @@
 
 #include "Token.h"
 #include "Object.h"
+#include "Value.h"
 
-namespace Expr {
+using namespace ValueOps;
 
-		typedef std::variant<bool, double, Obj*, nullptr_t> Value;
+namespace ExprOps {
 
-		template <class T>
 		struct Visitor;
 
 		struct Expr {
-				enum class ExprType {
-						DEFAULT, TERNARY, BINARY, GROUPING, LITERAL, LOGICAL, UNARY,
-				};
+			virtual ~Expr() = default;
 
-				template <class R>
-				R dispatchToAccept(Visitor<R>&);
+			virtual void accept(Visitor&) =0;
 
-		protected:
-				const ExprType thisNode = ExprType::DEFAULT;
 		};
 
 		struct Ternary : Expr {
-				Ternary(std::unique_ptr<Expr>, std::unique_ptr<Expr>, std::unique_ptr<Expr>);
+			Ternary(std::unique_ptr<Expr>, std::unique_ptr<Expr>, std::unique_ptr<Expr>);
 
-				const std::unique_ptr<Expr> expression;
-				const std::unique_ptr<Expr> left;
-				const std::unique_ptr<Expr> right;
+			void accept(Visitor&) override;
 
-		private:
-				const ExprType thisNode = ExprType::TERNARY;
+			const std::unique_ptr<Expr> expression;
+			const std::unique_ptr<Expr> left;
+			const std::unique_ptr<Expr> right;
 		};
 
 		struct Binary : Expr {
-				Binary(std::unique_ptr<Expr>, Token, std::unique_ptr<Expr>);
+			Binary(std::unique_ptr<Expr>, Token, std::unique_ptr<Expr>);
 
-				const std::unique_ptr<Expr> left;
-				const Token operatorr;
-				const std::unique_ptr<Expr> right;
+			void accept(Visitor&) override;
 
-		private:
-				const ExprType thisNode = ExprType::BINARY;
+			const std::unique_ptr<Expr> left;
+			const Token operatorr;
+			const std::unique_ptr<Expr> right;
 		};
 
 		struct Grouping : Expr {
-				Grouping(std::unique_ptr<Expr>);
+			Grouping(std::unique_ptr<Expr>);
 
-				const std::unique_ptr<Expr> expression;
+			void accept(Visitor&) override;
 
-		private:
-				const ExprType thisNode = ExprType::GROUPING;
+			const std::unique_ptr<Expr> expression;
 		};
 
 		struct Literal : Expr {
-				Literal(Value);
+			Literal(Value, int);
 
-				const Value value;
+			void accept(Visitor&) override;
 
-		private:
-				const ExprType thisNode = ExprType::LITERAL;
+			const Value value;
+			const int line;
 		};
 
 		struct Logical : Expr {
-				Logical(std::unique_ptr<Expr>, Token, std::unique_ptr<Expr>);
+			Logical(std::unique_ptr<Expr>, Token, std::unique_ptr<Expr>);
 
-				const std::unique_ptr<Expr> left;
-				const Token operatorr;
-				const std::unique_ptr<Expr> right;
+			void accept(Visitor&) override;
 
-		private:
-				const ExprType thisNode = ExprType::LOGICAL;
+			const std::unique_ptr<Expr> left;
+			const Token operatorr;
+			const std::unique_ptr<Expr> right;
 		};
 
 		struct Unary : Expr {
-				Unary(Token, std::unique_ptr<Expr>);
+			Unary(Token, std::unique_ptr<Expr>);
 
-				const Token operatorr;
-				const std::unique_ptr<Expr> right;
+			void accept(Visitor&) override;
 
-		private:
-				const ExprType thisNode = ExprType::UNARY;
+			const Token operatorr;
+			const std::unique_ptr<Expr> right;
 		};
 
-		template <class T>
 		struct Visitor {
-				T visitTernaryExpr(Ternary& expr) =0;
-				T visitBinaryExpr(Binary& expr) =0;
-				T visitGroupingExpr(Grouping& expr) =0;
-				T visitLiteralExpr(Literal& expr) =0;
-				T visitLogicalExpr(Logical& expr) =0;
-				T visitUnaryExpr(Unary& expr) =0;
+			virtual ~Visitor() = default;
+
+			Value result = nullptr;
+
+			virtual void visitTernaryExpr(const Ternary& expr) =0;
+			virtual void visitBinaryExpr(const Binary& expr) =0;
+			virtual void visitGroupingExpr(const Grouping& expr) =0;
+			virtual void visitLiteralExpr(const Literal& expr) =0;
+			virtual void visitLogicalExpr(const Logical& expr) =0;
+			virtual void visitUnaryExpr(const Unary& expr) =0;
 		};
 }

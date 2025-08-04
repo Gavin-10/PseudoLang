@@ -20,8 +20,10 @@ add_subdirectory("src")
 add_executable (PseudoLang "PseudoLang.cpp" "src/AST/Expr.h" "src/AST/Expr.cpp")
 
 target_link_libraries(PseudoLang PUBLIC Scanner)
-target_link_libraries(PseudoLang PUBLIC LangError)
+target_link_libraries(PseudoLang PUBLIC Utils)
 target_link_libraries(PseudoLang PUBLIC Parser)
+target_link_libraries(PseudoLang PUBLIC VM)
+target_link_libraries(PseudoLang PUBLIC AST)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET PseudoLang PROPERTY CXX_STANDARD 20)

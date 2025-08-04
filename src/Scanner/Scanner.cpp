@@ -14,7 +14,7 @@ const std::unordered_map<std::string, TokenType> keywords =
 		{"class", CLASS},
 		{"const", CONST},
 		{"else", ELSE},
-		{"flase", FALSE},
+		{"false", FALSE},
 		{"func", FUNC},
 		{"for", FOR},
 		{"if", IF},

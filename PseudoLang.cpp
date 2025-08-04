@@ -9,6 +9,15 @@
 
 #include "Scanner.h"
 #include "ASTGen.h"
+#include "Chunk.h"
+#include "VM.h"
+#include "Value.h"
+#include "Expr.h"
+#include "CodeGen.h"
+
+using namespace ChunkOps;
+using namespace ValueOps;
+using namespace ExprOps;
 
 void printTokens(std::vector<Token>& tokens, std::vector<unsigned char>& source) {
 		for (Token token : tokens) {
@@ -48,6 +57,10 @@ void run(std::string_view sourcePath) {
 #ifdef TOKEN_DEBUG
 		printTokens(tokens, source);
 #endif
+		std::vector<std::unique_ptr<Expr> > AST = ASTGen(source, tokens).buildAST();
+		std::unique_ptr<Chunk> primer = CodeGen(std::move(AST)).generate();
+
+		VM(*primer).interpret();
 }
 
 int main(int argc, char* argv[]) {
