@@ -65,16 +65,13 @@ void run(std::string_view sourcePath) {
 
 int main(int argc, char* argv[]) {
 
-		/*
+		
 		if (argc == 1) repl();
 		else if (argc == 2) run(argv[1]);
 		else {
 				std::cerr << "Unexpected arguments...Usage: [PseudoLang (filename.txt)?]" << std::endl;
 				exit(64);
 		}
-		*/
-
-		run("C:/Projects/PseudoLang/input.txt");
 
 		return 0;
 }

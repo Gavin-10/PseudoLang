@@ -1,0 +1,7 @@
+{
+  "type": "default",
+  "project": "PseudoLang.exe",
+  "projectTarget": "",
+  "name": "PseudoLang",
+  "args":  ["input.txt"]
+}
